@@ -8,6 +8,7 @@ use App\Order;
 use Session;
 use App\Cart;
 use Auth;
+use Illuminate\Support\Facades\DB;
 class CheckoutController extends Controller
 {
     //
@@ -19,8 +20,7 @@ class CheckoutController extends Controller
             $cart=new Cart($oldCart);
         }
         $token=$request->get('stripeToken');
-        // here most be an stripe key
-        // \Stripe\Stripe::setApiKey("$stripe_key");
+        \Stripe\Stripe::setApiKey("sk_test_w2K8er3AZqAAoBIh2eMPgD2F");
         $charge = \Stripe\Charge::create([
             'amount' => $cart->totalPrice,
             'currency' => 'usd',
@@ -64,5 +64,32 @@ class CheckoutController extends Controller
             'source' => $token,
         ]);
         dd('payment sucess');
+    }
+    public function postCheckoutCash(Request $request){
+           $this->validate($request, [
+              'name'=>'required|string',
+              'contact'=>'required',
+              'address'=>'required|string'
+           ]);
+          $oldCart=$request->session()->get('cart');
+          $cart=new Cart($oldCart);
+          $id=Auth::user()->id;
+          $order_cart = new Order();
+          $order_cart->name=$request->get('name');
+          $order_cart->address=$request->get('address');
+          $order_cart->contact=$request->get('contact');
+          $order_cart->user_id=$id;
+          $order_cart->cart=serialize($cart);
+          $order_id=Order::select('id')->max('id');
+          foreach($cart->items as $item){
+            DB::table('calculations')->insert(
+                ['order_id' => $order_id+1, 'user_id'=>Auth::user()->id, 'p_id'=>$item['item']['id'], 'qty'=>$item['qty']]
+            );
+           }
+          if($order_cart->save()){
+              $request->session()->forget('cart');
+              return redirect()->route('/')->with('sucess', 'Sucessfully Ordered');
+          }
+        //   $request->session()->put('order_cart', $order_cart);
     }
 }

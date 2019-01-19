@@ -15,7 +15,6 @@ class ParentCategoryController extends Controller
     public function index()
     {
         //
-        // $parents=ParentCategory::with('childs')->get();
         if(Auth::guard('admin')->check()){
         $parents=ParentCategory::all();
         return view('admin.category.parent.categoryList', ['parents'=>$parents]);
@@ -31,10 +30,11 @@ class ParentCategoryController extends Controller
     public function create()
     {
         //
-        if(Auth::guard('admin')->check()){
-        return view('admin.category.parent.create');
-         }
-         return redirect()->route('admin.login');
+            if(Auth::guard('admin')->check()){
+            $parents=ParentCategory::with('childs')->get();
+            return view('admin.category.parent.create', ['parents'=>$parents]);
+             }
+             return redirect()->route('admin.login');
     }
 
     /**
@@ -48,7 +48,6 @@ class ParentCategoryController extends Controller
         //
         $this->validate($request,[
                'name'=>'required',
-               'description'=>'min:10|max:200'
             ]);
         $parent= new ParentCategory([
             'parent_name'=>$request->get('name'),
@@ -56,10 +55,10 @@ class ParentCategoryController extends Controller
             ]);
         if($parent->save()){
             $parents=ParentCategory::all();
-            return redirect()->route('list');
-            // return view('admin.category.parent.categoryList', ['parents'=>$parents])->with('sucess', 'Parent Category Added Sucessfully');
+            // return redirect()->route('list');
+            return back()->with('sucess', 'sucessfully Added');
         }
-       return back()->withInput();
+       return back()->withInput()->with('error', 'could not be added');
     }
 
     /**
@@ -96,17 +95,16 @@ class ParentCategoryController extends Controller
      * @param  \App\ParentCategory  $parentCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request)
     {
         //
+        $id=$request->get('id');
         $parent=ParentCategory::find($id);
         $parent->parent_name=$request->get('name');
-        $parent->description=$request->get('description');
         if($parent->save()){
-            return redirect()->route('list');
-            // return view('admin.category.parent.categoryList', ['parents'=>$parents])->with('sucess', 'Parent Category Updated as well all the child category, Sucessfully');
+            return back()->with('sucess', 'sucessfully updated');
         }
-        return back()->withInput();
+        return back()->withInput()->with('sucess', 'could not be Updated');
     }
 
     /**

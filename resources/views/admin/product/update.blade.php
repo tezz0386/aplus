@@ -9,15 +9,6 @@
             <form method="post" enctype="multipart/form-data" action="{{route('updateproduct', $product->id)}}">
             @csrf
             @method('patch')
-            <div class="input-group mb-3">
-              <select class="form-control" name="child_name">
-                  @if(isset($category) && count($category))
-                  @foreach($category as $category)
-                  <option value="{{$category->child_name}}">{{$category->child_name}}</option>
-                   @endforeach
-                   @endif
-              </select>
-               </div>
 
                                             <span><label>Status Activation:</label>
                                                   <div class="switch-button">

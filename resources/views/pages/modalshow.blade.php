@@ -22,20 +22,6 @@
 											</a>
 										</div>
 									</div>
-                                    @if(isset($products))
-									@foreach($products as $product)
-									<div class="item-slick3" data-thumb="{{URL::asset('product/'.$product->path)}}">
-										<div class="wrap-pic-w pos-relative">
-											<img src="{{URL::asset('product/'.$product->path)}}" alt="IMG-PRODUCT">
-
-											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{URL::asset('product/'.$product->path)}}">
-												<i class="fa fa-expand"></i>
-											</a>
-										</div>
-									</div>
-									@endforeach
-									@endif
-
 								</div>
 							</div>
 						</div>
@@ -46,7 +32,9 @@
 							<h4 class="mtext-105 cl2 js-name-detail p-b-14" id="product_name">
 								
 							</h4>
-
+                            <span class="mtext-106 cl2" id="product_color">
+								
+							</span><br>
 							<span class="mtext-106 cl2" id="product_price">
 								
 							</span>
@@ -57,57 +45,15 @@
 							
 							<!--  -->
 							<div class="p-t-33">
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-203 flex-c-m respon6">
-										Size
-									</div>
+								
 
-									<div class="size-204 respon6-next">
-										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time">
-												<option>Choose an option</option>
-												<option>Size S</option>
-												<option>Size M</option>
-												<option>Size L</option>
-												<option>Size XL</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</div>
-								</div>
-
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-203 flex-c-m respon6">
-										Color
-									</div>
-
-									<div class="size-204 respon6-next">
-										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time">
-												<option>Choose an option</option>
-												<option>Red</option>
-												<option>Blue</option>
-												<option>White</option>
-												<option>Grey</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</div>
-								</div>
-
+							
+                            <br><br><br><br>
+							<br><br><br><br>
+							<br><br><br><br>
 								<div class="flex-w flex-r-m p-b-10">
 									<div class="size-204 flex-w flex-m respon6-next">
-										<div class="wrap-num-product flex-w m-r-20 m-tb-10">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1" id="num-product">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
+										
 
 										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" product_id="">
 											Add to cart
@@ -148,9 +94,7 @@
 		//for save the data
        $('.js-addcart-detail').click(function(){
            var p_id=$(this).attr('product_id');
-           var user_id=1;
           // var u_id=$(this).attr('product_id');
-          var no_of_cart=$('.wrap-modal1 #num-product').val();
            $.ajax({
            	// url:"php/cart.php",
            	url:"{{route('addToCart')}}",
@@ -159,7 +103,6 @@
            	data: {
            		"_token":"{{ csrf_token() }}",
            		"p_id":p_id,
-           		 "no_of_cart":no_of_cart,
                 dataType: 'JSON'
            	},
            	success: function(data){
@@ -168,20 +111,20 @@
           })
         });
 
-       $('.js-show-cart').click(function(){
-               $.ajax({
-               	url:"{{route('showCart')}}",
-               	type:"post",
-               	async:true,
-               	data:{
-                   "_token":"{{ csrf_token() }}",
-                   "dataType":'JSON'
-               	},
-               	sucess: function(data){
-               		console.log('hello');
-               	}
-               })
-       });
+    //    $('.js-show-cart').click(function(){
+    //            $.ajax({
+    //            	url:"{{route('showCart')}}",
+    //            	type:"post",
+    //            	async:true,
+    //            	data:{
+    //                "_token":"{{ csrf_token() }}",
+    //                "dataType":'JSON'
+    //            	},
+    //            	sucess: function(data){
+    //            		console.log('hello');
+    //            	}
+    //          })
+    //    });
 	});
 </script>
 @endsection

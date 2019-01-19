@@ -6,17 +6,25 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\Notifications\sendVerification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 use App\User;
+use Auth;
+use App\Product;
 use App\Transaction;
+use App\Calculation;
 class OrderController extends Controller
 {
     //
     public function index(){
+        if(Auth::guard('admin')->check()){
         $orders=Order::with('user')->orderBy('created_at','dec')->paginate(8);
         return view('admin.order.orderList', ['orders'=>$orders]);
-
+        }else{
+            return redirect()->route('admin.login');
+        }
     }
     public function orderDetails($id){
+        if(Auth::guard('admin')->check()){
              $orders=Order::with('user')->where('id', $id)->where('trash', 'off')->orderBy('created_at','dec')->get();
              $orders->transform( function($order, $key){
                 $order->cart=unserialize($order->cart);
@@ -26,10 +34,15 @@ class OrderController extends Controller
          return view('admin.order.orderDetails', ['orders'=>$orders]);
      }else{
          return redirect()->route('admin.order')->with('error', 'Could not be view please check on Trashed Category List');
-     }
+     } 
+    }else{
+        return redirect()->route('admin.login');
+    }
  }
     public function orderDeliver($id){
+        if(Auth::guard('admin')->check()){
         $totalIncome='';
+        $totalQty='';
         $ord=Order::find($id);
         $orders=Order::where('id', $id)->get();
              $orders->transform( function($order, $key){
@@ -38,20 +51,42 @@ class OrderController extends Controller
               });
         foreach($orders as $order){
            $totalIncome= $order->cart->totalPrice;
+           $totalQty= $order->cart->totalQty;
         }
         $transaction =new Transaction([
             'order_id'=>$id,
+            'total_qty'=>$totalQty,
             'total_income'=>$totalIncome,
         ]);
+
+        // for calculation
+        
+
+        // $calculations =Calculation::with('product')->where('order_id', $id)->get();
+        // $calculations =Product::with('calculation')->get();
+        // return $calculations;
+        // $calculations= DB::table('calculations')
+        // ->join('products', 'calculations.p_id', '=', 'products.id')
+        // ->select('calculations.qty', 'products.qty')->get();
+        // return $calculations;
+
+       if($ord->status=='off'){
         $ord->status='on';
         if($ord->save() && $transaction->save()){
             return back()->with('sucess', 'Transaction Sucessfully');
         }else{
             return back()->with('sucess', 'Transaction Unsucessfull');
         }
+       }else{
+           return back()->with('sucess', 'Could not be delivered again');
+       }
+    }else{
+        return redirect()->route('admin.login');
+    }
   }
 
   public function orderTrash($id){
+    if(Auth::guard('admin')->check()){
       $order=Order::find($id);
       $user_id=$order->user_id;
       $user=USer::find($user_id);
@@ -82,10 +117,14 @@ class OrderController extends Controller
       }else{
           return back()->with('error', 'something is going wrong could not be trashed');
       }
+    }else{
+        return redirect()->route('admin.login');
+    }
   }
 
 
   public function orderTrashNow($id){
+    if(Auth::guard('admin')->check()){
     $order=Order::find($id);
     $user_id=$order->user_id;
     $user=USer::find($user_id);
@@ -102,10 +141,16 @@ class OrderController extends Controller
     }else{
         return back()->with('error', 'something is going wrong could not be trashed');
     }
+}else{
+    return redirect()->route('admin.login');
+}
    }
    public function orderTrashView(){
+    if(Auth::guard('admin')->check()){
      $orders=Order::where('trash', 'on')->orderBy('created_at','dec')->paginate(8);
      return view('admin.order.trashOrder', ['orders'=>$orders]);
-   }
-
+   }else{
+    return redirect()->route('admin.login');
+ }
+}
 }

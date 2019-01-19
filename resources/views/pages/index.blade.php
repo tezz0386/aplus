@@ -9,6 +9,25 @@
 	<!-- Banner -->
     @include('pages.firstSection')
 
+
+
+
+    <!-- Suggested Product -->
+	@if(isset($suggests) && count($suggests)>0)
+	<section class="bg0 p-t-23 p-b-140">
+		<div class="container">
+			<div class="p-b-10">
+				<h3 class="ltext-103 cl5">
+					Suggested
+				</h3>
+			</div>
+			<div class="row isotope-grid">
+			
+			</div>
+		</div>
+	</section>
+  @endif
+
 	<!-- Product -->
 	<section class="bg0 p-t-23 p-b-140">
 		<div class="container">

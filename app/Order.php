@@ -12,7 +12,8 @@ class Order extends Model
             'name',
             'card_holder_name',
             'address',
-            'user_id'
+            'user_id',
+            'contact'
     ];
     protected $hidden=[
            'user_id'

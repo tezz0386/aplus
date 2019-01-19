@@ -74,7 +74,7 @@ Route::group(['prefix'=>'admin/dashboard/parent'], function(){
               'as'=>'showparent'
 	      	  ]);
 	         
-	      	   Route::patch('/{parent}',[
+	      	   Route::patch('/{parent?}',[
               'uses'=>'ParentCategoryController@update',
               'as'=>'updateparent'
 	      	   ]);
@@ -82,8 +82,8 @@ Route::group(['prefix'=>'admin/dashboard/parent'], function(){
 
                 // for delete but now i has could not deleted
 	      	   Route::delete('/{parent}/deleted',[
-              'uses'=>'ParentCategoryController@destroy',
-              'as'=>'deleteparent'
+                    'uses'=>'ParentCategoryController@destroy',
+                     'as'=>'deleteparent'
 	      	  ]);
 });
 Route::group(['prefix'=>'admin/dashboard/child'], function(){
@@ -104,16 +104,15 @@ Route::group(['prefix'=>'admin/dashboard/child'], function(){
                            'uses'=>'CategoryController@show',
                            'as'=>'childshow'
                      	]);
-                      Route::patch('/{category}',[
+                      Route::patch('/{category?}',[
                            'uses'=>'CategoryController@update',
                            'as'=>'updatechild'
                      	]);
 
                       // fo delete but now could not working
-                      Route::delete('/{category}/deleted', [
+                      Route::delete('/category/deleted', [
                             'uses'=>'CategoryController@destroy',
                             'as'=>'deletechild'
-
                       	]);
                            
 });
@@ -122,10 +121,6 @@ Route::group(['prefix'=>'admin/dashboard/product'], function(){
                      'uses'=>'ProductController@index',
                      'as'=>'allproduct'
               ]);
-           Route::get('/',[
-               'uses'=>'ProductController@create',
-               'as'=>'addproduct'
-           	]);
             Route::post('/',[
                'uses'=>'ProductController@store',
                'as'=>'storeproduct'
@@ -134,7 +129,7 @@ Route::group(['prefix'=>'admin/dashboard/product'], function(){
                'uses'=>'ProductController@show',
                'as'=>'showproduct'
            	]);
-           	 Route::patch('/{product}',[
+           	 Route::patch('/{product?}',[
                'uses'=>'ProductController@update',
                'as'=>'updateproduct'
            	]);
@@ -173,6 +168,10 @@ Route::group(['prefix'=>'/admin/dashboard/'], function(){
                        'uses'=>'TransactionController@index',
                        'as'=>'admin.transaction'
              ]);
+             Route::get('/transaction/details/{id?}', [
+                  'uses'=>'TransactionController@viewDetails',
+                  'as'=>'admin.transaction.view.details'
+        ]);
 });
 
 
@@ -189,6 +188,10 @@ Route::group(['prefix'=>'user'], function(){
           'uses'=>'viewController@shopingCart',
           'as'=>'shoping-cart'
         ]);
+        Route::get('/shoping-cart/update',[
+            'uses'=>'viewController@shopingCartUpdate',
+            'as'=>'shoping-cart.update'
+          ]);
         Route::get('/login',[
           'uses'=>'Auth\UserLoginController@getLogin',
           'as'=>'login'
@@ -225,6 +228,14 @@ Route::group(['prefix'=>'user'], function(){
                'uses'=>'CheckoutController@getCheckout',
                'as'=>'user.checkout'   
          ]);
+         Route::post('/shoping-cart/checkout/cash-on-delivery',[
+            'uses'=>'CheckoutController@postCheckoutCash',
+            'as'=>'user.checkout.cash'  
+           ]); 
+           Route::post('/shoping-cart/update',[
+            'uses'=>'ViewController@updateCart',
+            'as'=>'user.updateCart'  
+           ]); 
 });
     Route::group(['prefix'=>'/user'], function(){
        Route::group(['middleware'=>'auth'], function(){

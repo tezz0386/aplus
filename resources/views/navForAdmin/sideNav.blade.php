@@ -62,30 +62,14 @@
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Category</a>
                                 <div id="submenu-2" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
-
-
-
-                               <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5">Parent Category</a>
-                                <div id="submenu-5" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('addparent')}}">Add Parent Category <span class="badge badge-secondary">New</span></a>
+                                            <a class="nav-link" href="{{route('addparent')}}">Category/Product <span class="badge badge-secondary">New</span></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('list')}}">All Parent Categories</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>  
-
-
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{route('addchild')}}">Add Category <span class="badge badge-secondary">New</span></a>
+                                            <a class="nav-link" href="{{route('list')}}">All Parent Category</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('allchild')}}">All Categories</a>
+                                            <a class="nav-link" href="{{route('allchild')}}">All Child Category</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="#">Trashed Categories</a>
@@ -98,9 +82,6 @@
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Product</a>
                                 <div id="submenu-3" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{route('addproduct')}}">Add Product</a>
-                                        </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('allproduct')}}">All Products</a>
                                         </li>

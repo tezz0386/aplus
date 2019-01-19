@@ -19,9 +19,12 @@ class CreateOrdersTable extends Migration
             $table->string('name');
             $table->string('card_holder_name');
             $table->string('address');
+            $table->string('contact');
             $table->longText('cart');
             $table->string('status');
             $table->string('trash');
+            $table->string('method');
+            $table->string('confirm');
             $table->timestamps();
         });
     }

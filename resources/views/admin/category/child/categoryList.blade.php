@@ -18,7 +18,6 @@
                                                 <th>#</th>
                                                 <th>Parent Name</th>
                                                 <th>Category Name</th>
-                                                <th>Description</th>
                                                 <th colspan="3">Action</th>
                                             </tr>
                                         </thead>
@@ -30,17 +29,7 @@
                                                 <td>{{$category->id}}</td>
                                                  <td>{{$category->parent_name}}</td>
                                                 <td>{{$category->child_name}}</td>
-                                                <td>{{$category->description}}</td>
-                                                <td><a href="{{route('childshow', $category->id)}}">Edit</a></td>
-                                               <td><a href="#" onclick="">Remove
-
-                                                <form action="{{route('deletechild', $category->id)}}" method="post" hidden="hidden" id="delete-form">
-                                                    @method('delete')
-                                                    @csrf
-                                                </form>
-                                                 
-
-                                               </a></td>
+                                                <td><a href="3">Delete Now</a>
                                             </tr>
                                             @endforeach
                                             @endif

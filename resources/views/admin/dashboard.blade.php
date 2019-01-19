@@ -81,6 +81,11 @@
     <script src="{{asset('assets/vendor/slimscroll/jquery.slimscroll.js')}}"></script>
     <!-- main js -->
     <script src="{{asset('assets/libs/js/main-js.js')}}"></script>
+    <script src="{{asset('js/both.js')}}"></script>
+    <script src="{{asset('assets/vendor/shortable-nestable/Sortable.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/shortable-nestable/sort-nest.js')}}"></script>
+    <script src="{{asset('assets/vendor/shortable-nestable/jquery.nestable.js')}}"></script>
+
     <!-- chart chartist js -->
     @yield('scripts')
 </body>

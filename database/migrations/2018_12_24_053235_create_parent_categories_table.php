@@ -16,7 +16,6 @@ class CreateParentCategoriesTable extends Migration
         Schema::create('parent_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('parent_name');
-            $table->longText('description');
             $table->timestamps();
         });
     }

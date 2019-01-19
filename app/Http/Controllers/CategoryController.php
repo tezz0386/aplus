@@ -40,50 +40,42 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request){
-               $this->validate($request,[
-                      'cat_name'=>'required',
-                      'name'=>'required',
-                      'description'=>'min:10|max:200'
-
+               $this->validate($request,[        
+                      'name'=>'required'
                 ]);
-            $cat_name=$request->get('cat_name');
-            $parent=ParentCategory::where('parent_name', $cat_name)->first();
             $category=new Category([
-                'cat_id'=>$parent->id,
+                'cat_id'=>$request->get('id'),
                 'child_name'=>$request->get('name'),
-                'description'=>$request->get('description')
                 ]);
             if($category->save()){
-               return redirect()->route('allchild');
+            return back()->with('sucess', 'sucessfully Added');
             }
-            return back();
+            return back()->with('sucess', 'could not be added');
     }
 
-    public function update(Request $request ,$id){
+    public function update(Request $request){
          $this->validate($request,[
-                      'cat_name'=>'required',
                       'name'=>'required',
-                      'description'=>'min:10|max:200'
                 ]);
-         $parent_name=$request->get('cat_name');
-         $parent=ParentCategory::where('parent_name', $parent_name)->first();
+         $id=$request->get('id');
          $category=Category::find($id);
-         $category->cat_id=$parent->id;
          $category->child_name=$request->get('name');
-         $category->description=$request->get('description');
          if($category->save()){
-           return redirect()->route('allchild');
+        //    return redirect()->route('allchild');
+        return back()->with('sucess', 'sucessfully updated');
          }
-         return back();
+         return back()->with('sucess', 'could not be updated');
 
     }
-    public function destroy($id){
+
+    public function destroy(Request $request){
         if(Auth::guard('admin')->check()){
+        $id=$request->get('id');
         $category=Category::find($id);
         if($category->delete()){
-           return redirect()->route('allchild');
+        return back()->with('sucess', 'sucessfully deleted');
         }
-        return back();
+        return back()->with('could not be deleted');
       }
       return redirect()->route('admin.login');
     }

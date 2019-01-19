@@ -40,9 +40,9 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Customer Name</th>
-                                                <th>Card Holder</th>
-                                                <th>Delivery Address</th>
+                                                <th>Transaction Date</th>
+                                                <th>Qty Sold</th>
+                                                <th>Income </th>
                                                 <th colspan="3">Action</th>
                                             </tr>
                                         </thead>
@@ -51,8 +51,11 @@
                                             @if(isset($transactions) && count($transactions)>0)
                                             @foreach($transactions as $transaction)
                                              <tr>
-                                                 
-                                                
+                                                 <td>{{$transaction->id}}</td>
+                                                 <td>{{$transaction->created_at}}</td>
+                                                 <td>{{$transaction->total_qty}}</td>
+                                                 <td>RS: {{$transaction->total_income}}</td> 
+                                                 <td><a href="{{route('admin.transaction.view.details', $transaction->id)}}">View More</a></td>  
                                             </tr>
                                             @endforeach
                                             @endif
@@ -66,5 +69,20 @@
                     <!-- ============================================================== -->
                     <!-- end basic table  -->
                     <!-- ============================================================== -->
-                </div>      
+          <div class="container">
+               <div class="row">
+               @if(isset($totalQty) && ($totalIncome))
+                    <div class="col-md-4">
+                       Total Income RS: {{$totalIncome}}
+                    </div>
+                    <div class="col-md-4">
+                          Total Qty Sold: {{$totalQty}}
+                    </div>
+                    <div class="col-md-4">
+                         
+                    </div>
+                @endif
+               </div>
+          </div>
+     </div>      
 @endsection

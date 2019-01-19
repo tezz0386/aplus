@@ -52,23 +52,26 @@ class ProductController extends Controller
     {
         //
         $this->validate($request,[
-
               'image'=>'required',
               'name'=>'required',
-              'description'=>'min:10|max:200',
               'price'=>'required',
               'qty'=>'required|integer',
               'size'=>'required',
               'color'=>'required|string'
             ]);
+        $id='';
+        if($request->get('child_name')!=null){
+            $category=Category::where('child_name', $request->get('child_name'))->first();
+            $id=$category->id;
+        }else{
+            $id=$request->get('id');
+        }
         $imageName='';
         $imageName=time().'.'.$request->image->getClientOriginalExtension();
         $path=$request->image->move(public_path('product'), $imageName);
-        $child_name=$request->get('child_name');
-        $category=Category::where('child_name', $child_name)->first();
         // return $category->id;
         $product=new Product([
-                 'child_id'=>$category->id,
+                 'child_id'=>$id,
                  'p_name'=>$request->get('name'),
                  'description'=>$request->get('description'),
                  'price'=>$request->get('price'),
@@ -81,10 +84,10 @@ class ProductController extends Controller
                  'path'=>$imageName
             ]);
         if($product->save()){
-            return redirect()->route('allproduct');
+            // return redirect()->route('allproduct');
+            return back()->with('sucess', 'successfully product added');
         }
-        return back();
-
+        return back()->with('could not be added');
     }
 
     /**
@@ -123,11 +126,10 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
         //
         $this->validate($request,[
-
               'image'=>'required',
               'name'=>'required',
               'description'=>'min:10|max:200',
@@ -139,9 +141,7 @@ class ProductController extends Controller
         $path = '';
         $imageName=time().'.'.$request->image->getClientOriginalExtension();
         $path=$request->image->move(public_path('product'), $imageName);
-        $child_name=$request->get('child_name');
-        $category=Category::where('child_name', $child_name)->first();
-        $product=Product::find($product->id);
+        $product=Product::find($request->get('id'));
         $product->p_name=$request->get('name');
         $product->description=$request->get('description');
         $product->price=$request->get('price');
@@ -150,11 +150,12 @@ class ProductController extends Controller
         $product->color=$request->get('color');
         $product->size=$request->get('size');
         $product->available_qty=$request->get('available_qty');
-         $product->path=$imageName;
+        $product->path=$imageName;
         if($product->save()){
-            return redirect()->route('allproduct', ['sucess', 'Producted Updated sucessfully']);
+            // return redirect()->route('allproduct', ['sucess', 'Producted Updated sucessfully']);
+            return back()->with('sucess', 'sucessfully Updated');
         }
-        return back();
+        return back()->with('sucess', 'could not be updated');
     }
 
     /**

@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+	<link rel="icon" type="image/png" href="{{URL::asset('images/icons/favicon.png')}}"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->
@@ -147,7 +147,7 @@
 						@endif
 						data-notify="0"
 						>
-							<i class="zmdi zmdi-shopping-cart"></i>
+							<a href="{{route('shoping-cart')}}"><i class="zmdi zmdi-shopping-cart"></i></a>
 						</div>
                         <!-- faveroute to be added -->
 						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
@@ -207,7 +207,7 @@
 						@endif
                         data-notify="0"
 						>
-					<i class="zmdi zmdi-shopping-cart"></i>
+						<a href="{{route('shoping-cart')}}"><i class="zmdi zmdi-shopping-cart"></i></a>
 				</div>
 
 				<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
@@ -317,9 +317,6 @@
 		</div>
 	</header>
 	<!-- Cart -->
-	@include('pages.cartSection')
-
-	@include('partial.errors')
 	@yield('content')
 	<!-- Footer -->
 	<footer class="bg3 p-t-75 p-b-32">
@@ -564,13 +561,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				swal(nameProduct, "is added to cart !", "success");
 			});
 		});
-		$('.btn-large').each(function(){
-			// var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-			
-			$(this).on('click', function(){
-				swal('You Have Just Order', "Some Product", "success");
-			});
-		});
 	
 	</script>
 <!--===============================================================================================-->
@@ -592,24 +582,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</script>
 <!--===============================================================================================-->
 	<script src="{{asset('js/main.js')}}"></script>
-	<!-- <script type="text/javascript">
-	       $('.js-show-cart').click(function(){
-			$.ajax({
-             	url:"{{route('user.showCartSection')}}",
-              	type:"get",
-              	async:true,
-           	data: {
-           	    	"_token":"{{ csrf_token() }}",
-                     dataType: 'JSON'
-             	},
-               	success: function(data){
-                //   $('.js-show-cart').attr('data-notify', data);
-				//   $('.js-panel-cart').html(data);
-				console.log(data);
-           	  }
-             })
-		   });
-	</script> -->
+	<script src="{{asset('js/both.js')}}"></script>
 	@yield('scripts')
     @yield('scriptsForCart')
 

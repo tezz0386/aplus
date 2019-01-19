@@ -1,33 +1,30 @@
 @extends('admin.dashboard')
 @section('content')
 
-                  <div class="card">
+                        <div class="card">
                                     <h5 class="card-header">Item Add Form 
                                              
                                     </h5>
                                     <div class="card-body">
-            <form method="post" 
-            action="{{route('storeproduct')}}" enctype="multipart/form-data">
-             @csrf
-            <div class="input-group mb-3">
+            <form method="post" action="{{route('storeproduct')}}" enctype="multipart/form-data">
+              @csrf
+              <div class="input-group mb-3">
               <select class="form-control" name="child_name">
                   @if(isset($category) && count($category))
                   @foreach($category as $category)
-                  <option hidden="hidden">Choose Category</option>
                   <option value="{{$category->child_name}}">{{$category->child_name}}</option>
                    @endforeach
                    @endif
               </select>
-               </div>
-
-                                            <span><label>Status Activation:</label>
+            </div>
+                                <span><label>Status Activation:</label>
                                                   <div class="switch-button">
                                                         <input type="checkbox" checked="" name="switch14" id="switch14"><span>
                                                     <label for="switch14"></label></span>
                                                     </div>
                                              </span>
 
-
+                        
                                             <div class="form-group">
                                                 <label for="inputText3" class="col-form-label">Item Name:</label>
                                                 <input id="inputText3" type="text" class="form-control" name="name">
@@ -39,7 +36,7 @@
                                              <li class="list-group-item active"><h5>Feaured Image</h5></li>
                                              <li class="list-group-item">
 				                                     <div class="img-thumbnail  text-center">
-				                                     	<img src=" http://127.0.0.1/l5ecom/public/images/no-thumbnail.jpeg" id="imgthumbnail" class="img-fluid" alt="Image not found">
+				                                     	<img src=" http://127.0.0.1/l5ecom/public/images/no-thumbnail.jpeg" id="imgthumbnail" class="img-fluid" alt="Image not found" height="300" width="200">
 				                                     </div>
                                              <div class="input-group mb-3">
                                                <div class="custom-file ">

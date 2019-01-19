@@ -4,7 +4,6 @@
 	<br>
 	<br>
 	<br>
-	@include('pages.cartSection')
 	<!-- Shoping Cart -->
 	@if(Session::has('cart'))
 	<form class="bg0 p-t-75 p-b-85" method="get" action="{{route('checkout')}}">
@@ -34,13 +33,13 @@
 									<td class="column-3">RS: {{$product['item']['price']}}</td>
 									<td class="column-4">
 										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" id="minusUpdate{{$product['item']['id']}}">
 												<i class="fs-16 zmdi zmdi-minus"></i>
 											</div>
+											
+											<input class="mtext-104 cl3 txt-center num-product" type="number" name="Num{{$product['item']['p_name']}}" value="{{$product['qty']}}" id="myUpdate{{$product['item']['id']}}" p_id="{{$product['item']['id']}}">
 
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="{{$product['qty']}}">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" id="plusUpdate{{$product['item']['id']}}">
 												<i class="fs-16 zmdi zmdi-plus"></i>
 											</div>
 										</div>
@@ -142,13 +141,13 @@
                           <div class="form-group">
 						       	   <select name="method" class="form-control custom-select">
 						      	       <option hidden="hidden">Choose Payment Method</option>
-						      	       <option value="1">Card</option>
-						      	       <option value="2">Fund Trasnfer</option>
-						      	       <option value="3">Other</option>
-						      	       <option value="4">Cash On Delivery</option>
+									   <option value="1">Cash On Delivery</option>
+						      	       <option value="2">Card</option>
+						      	       <option value="3">Fund Trasnfer</option>
+						      	       <option value="4">Other</option>
 						            </select>
 						    </div>
-						<button typr="submit" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<button type="submit" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Proceed to Checkout
 						</button>
 					</div>
@@ -163,5 +162,52 @@
 	</style>
 	@endif
 	@endsection	
-
+@section('scriptsForCart')
+<script>
+$(document).ready(function(){
+	@foreach($products as $product)
+         $('#minusUpdate{{$product['item']['id']}}').click(function(){
+             var qty=$('#myUpdate{{$product['item']['id']}}').val();
+			 var p_id=$('#myUpdate{{$product['item']['id']}}').attr('p_id');
+			//  alert(qty);
+               $.ajax({
+               	url:"{{route('user.updateCart')}}",
+               	type:"post",
+               	async:true,
+               	data:{
+					"p_id":p_id,
+					"qty":qty,
+                   "_token":"{{ csrf_token() }}",
+                   "dataType":'JSON'
+               	},
+               	sucess: function(data){
+					// $('.js-show-cart').attr('data-notify', data);
+               	}
+             })
+			 
+		 });
+		 $('#plusUpdate{{$product['item']['id']}}').click(function(){
+			var qty=$('#myUpdate{{$product['item']['id']}}').val();
+			var p_id=$('#myUpdate{{$product['item']['id']}}').attr('p_id');
+			//  alert(p_id);
+			 $.ajax({
+               	url:"{{route('addToCart')}}",
+               	type:"post",
+               	async:true,
+               	data:{
+					"p_id":p_id,
+					"qty":qty,
+                   "_token":"{{ csrf_token() }}",
+                   "dataType":'JSON'
+               	},
+               	sucess: function(data){
+					// $('.flex-r-m .js-show-cart').attr('data-notify', data);
+					// console.log(data);
+               	}
+             })
+		 });
+    @endforeach     
+});
+</script>
+@endsection
 	

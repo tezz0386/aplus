@@ -40,7 +40,11 @@
                                                 <td>{{$product->color}}</td>
                                                 <td>{{$product->size}}</td>
                                                 <td>{{$product->available_qty}}</td>
-                                                <td><a href="{{route('showproduct', $product->id)}}">Edit</a></td>
+                                                <td><button class="btn btn-link" data-toggle="modal" data-target="#editProduct"
+                                                id="edit{{$product->id}}" p_id="{{$product->id}}" p_name="{{$product->p_name}}" p_price="{{$product->price}}"
+                                                p_discount="{{$product->discount}}" p_qty="{{$product->qty}}" p_color="{{$product->color}}" p_size="{{$product->size}}"
+                                                p_available_qty="{{$product->available_qty}}" p_description="{{$product->description}}"  href="{{URL::asset('product/'.$product->path)}}"  
+                                                >Edit</button></td>
                                                 <td>
                                                     <a href="#" onclick="trashProduct()">Trash</a>
                                                    
@@ -64,12 +68,156 @@
                     <!-- ============================================================== -->
                 </div>
 
-                 <script type="text/javascript">
-                    function deleteMethod(){
-                        // if(confirm('Are you want to remove...................?')){
-                        //      event.preventDefault();
-                        //     document.getElementById('delete-form').submit();
-                        // }
-                    }
-                </script>
+
+
+<div class="modal fade" id="editProduct" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+
+        <div class="modal-header">
+        <h4 class="modal-title">Product Edit</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+         
+        <form method="post" enctype="multipart/form-data" action="{{route('updateproduct')}}">
+            @csrf
+            @method('patch')
+
+                                            <span><label>Status Activation:</label>
+                                                  <div class="switch-button">
+                                                        <input type="checkbox" checked="" name="switch14" id="switch14"><span>
+                                                    <label for="switch14"></label></span>
+                                                    </div>
+                                             </span>
+
+                                            <input type="text" hidden="hidden" id="idForProduct" name="id">
+                                            <div class="form-group">
+                                                <label for="nameProduct" class="col-form-label">Item Name:</label>
+                                                <input type="text" class="form-control" name="name" id="nameProduct">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                                            </div>
+                                             <li class="list-group-item">
+                                                  <label>Image Feature</label>
+				                                     <div class="img-thumbnail  text-center">
+				                                     	<img
+                                                         src="{{$product->path}}"
+                                                         id="imgthumbnail" class="img-fluid" alt="Image not found">
+				                                     </div>
+                                             <div class="input-group mb-3">
+                                               <div class="custom-file ">
+                                                <input type="file" class="custom-file-input" name="image" id="thumbnail">
+                                                <label class="custom-file-label" for="thumbnail">Choose Item Image</label>
+                                               </div>
+                                             </div>
+			                                     </li>
+
+
+
+
+                    <div class="row">
+                             <div class="col-md-6">
+
+                                            <div class="form-group">
+                                            	<label for="price">Price:</label>
+                                            <div class="input-group mb-3">
+
+                                                <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+
+                                                <input type="text" class="form-control" name="price" id="price">
+                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
+                                            </div>
+                                            </div>
+
+
+
+
+
+
+
+                                            <div class="form-group">
+                                              <label for="discount">Discount:</label>
+                                            <div class="input-group mb-3">
+
+                                                <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+
+                                                <input type="text" class="form-control" name="discount" id="discount">
+                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
+                                            </div>
+                                            </div>
+
+                        </div>
+
+                                           <div class="form-group">
+                                                <label for="qty">Qty:</label>
+                                                <div class="input-group mb-3">
+                                                <input type="text" class="form-control" name="qty" id="qty">
+                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
+                                            </div>
+                                            </div>
+                    </div>
+
+                                        
+				                                     	<div class="form-group">
+                                                         <label>Other Feature</label>
+				                                     		<label for="color">Color:</label>
+				                                     		<input type="text" name="color" class="form-control" id="color">
+				                                     	</div>
+				                                     	<div class="form-group">
+				                                     		<label for="size">Size:</label>
+				                                     		<input type="text" name="size" class="form-control" id="size">
+				                                     	</div>
+                                             <div class="form-group">
+                                                <label for="available_qty">Available Qty:</label>
+                                                <div class="input-group mb-3">
+                                                <input type="text" class="form-control" name="available_qty" id="available_qty">
+                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
+                                            </div>
+                                            </div>
+                                            <div class="form-group">
+                                            	<button type="submit" class="btn btn-primary">Update</button>
+                                            	<a href="#" class="btn btn-warning">Canel</a>
+                                            </div>
+                                            </div>
+                                        </form>
+
+        </div>
+      </div>
+      
+    </div>
+  </div>
+@endsection
+@section('scripts')
+<script>
+     $(document).ready(function(){
+        @foreach($products as $product)
+         $('#edit{{$product->id}}').click(function(){
+              $('#idForProduct').val($(this).attr('p_id'));
+              $('#nameProduct').val($(this).attr('p_name'));
+              $('#qty').val($(this).attr('p_qty'));
+              $('#price').val($(this).attr('p_price'));
+              $('#description').val($(this).attr('p_description'));
+              $('#available_qty').val($(this).attr('p_available_qty'));
+              $('#imgthumbnail').attr('src', $(this).attr('href'));
+              $('#color').val($(this).attr('p_color'));
+              $('#size').val($(this).attr('p_size'));
+              $('#discount').val($(this).attr('p_discount'));
+         });
+         @endforeach
+     })
+     $('#thumbnail').on('change', function() {
+var file = $(this).get(0).files;
+var reader = new FileReader();
+reader.readAsDataURL(file[0]);
+reader.addEventListener("load", function(e) {
+var image = e.target.result;
+$("#imgthumbnail").attr('src', image);
+});
+});
+</script>
 @endsection
