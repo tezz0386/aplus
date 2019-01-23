@@ -9,34 +9,33 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Reset</h5>
               </div>
               <div class="modal-body">
-                     <form action="{{route('login')}}" method="POST">
+                     <form action="{{route('postReset')}}" method="POST">
                       @include('partial.error')
                                 @csrf
                                 @method('post')
                                 <div class="form-group">
-                                    <label for="email" class="col-form-label">Email:</label>
-                                    <input name="email" type="email" class="form-control" id="email" required="required" autocomplete="off">
+                                    <label for="verification" class="col-form-label">Verification Code:</label>
+                                    <input name="verification" type="text" class="form-control" id="verification" required="required" autocomplete="off"
+                                    @if(isset($verification) && count($verification)>0)value={{$verification}}@endif
+                                    >
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="col-form-label">Password:</label>
+                                    <label for="password" class="col-form-label">password:</label>
                                     <input name="password" type="password" class="form-control" id="password" required="required" autocomplete="off">
-                                    <label>Forget Password..........................................................................?</label><a href="{{route('getForget')}}" class="btn btn-link">Recover</a>
                                 </div>
-            </div>
-            <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Login</button>
-		      	<strong>Not have account..................................................?</strong>
-            <a href="{{route('signup')}}" class="btn btn-info">Signup</a>
-           </div>
+                 </div>
+                     <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Reset</button>
+                     </div>
                      </form>
 
               </div>
             </div>
           </div>
-</div>
+        </div>
 
   		</div>
   		<div class="col-md-3 col-lg-3 col-sm-0"></div>

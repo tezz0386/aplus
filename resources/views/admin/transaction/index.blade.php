@@ -4,13 +4,13 @@
                           <div class="container">
                               <div class="row">
                                    <div class="col-md-3">
-                                      <a href="#" class="btn btn-default">Today's Transaction</a>
+                                      <a href="{{route('admin.transaction.today')}}" class="btn btn-default">Today's Transaction</a>
                                    </div>
                                    <div class="col-md-3">
-                                        <a href="#" class="btn btn-default">Yesterday's Transaction</a>
+                                        <a href="{{route('admin.transaction.yesterday')}}" class="btn btn-default">Yesterday's Transaction</a>
                                    </div>
                                    <div class="col-md-3">
-                                       <a href="#" class="btn btn-default">Previous one week Transaction</a>
+                                       <a href="{{route('admin.transaction.week')}}" class="btn btn-default">This Week Transaction</a>
                                    </div>
                                    <div class="col-md-3">
                                       <div class="input-group mb-3">

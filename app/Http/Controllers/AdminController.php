@@ -14,7 +14,7 @@ class AdminController extends Controller
      	return view('admin.login');
      }
       public function dashBoard(){
-        if(Auth::guard('admin')->check()){
+      if(Auth::guard('admin')->check()){
      	return view('admin.dashboard');
      }else{
         return view('admin.login');

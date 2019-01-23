@@ -34,8 +34,8 @@
 						</div>
 						@include('pages.modalshow')
 					</div>
-				</div>
-		{{$products->onEachSide(5)->links()}}
+					{{$products->onEachSide(5)->links()}}
+			  </div>
 				<!-- loop end -->
 @endforeach
 @endif

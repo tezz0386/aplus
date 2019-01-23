@@ -7,6 +7,7 @@ use App\ParentCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
+use App\Product;
 class CategoryController extends Controller
 {
   
@@ -41,11 +42,11 @@ class CategoryController extends Controller
 
     public function store(Request $request){
                $this->validate($request,[        
-                      'name'=>'required'
+                      'child_name'=>'required|unique:categories'
                 ]);
             $category=new Category([
                 'cat_id'=>$request->get('id'),
-                'child_name'=>$request->get('name'),
+                'child_name'=>$request->get('child_name'),
                 ]);
             if($category->save()){
             return back()->with('sucess', 'sucessfully Added');
@@ -55,11 +56,11 @@ class CategoryController extends Controller
 
     public function update(Request $request){
          $this->validate($request,[
-                      'name'=>'required',
+            'child_name'=>'required|unique:categories'
                 ]);
          $id=$request->get('id');
          $category=Category::find($id);
-         $category->child_name=$request->get('name');
+         $category->child_name=$request->get('child_name');
          if($category->save()){
         //    return redirect()->route('allchild');
         return back()->with('sucess', 'sucessfully updated');
@@ -67,17 +68,46 @@ class CategoryController extends Controller
          return back()->with('sucess', 'could not be updated');
 
     }
-
-    public function destroy(Request $request){
-        if(Auth::guard('admin')->check()){
-        $id=$request->get('id');
+    public function trashCategory(Request $request){
+        $id =$request->get('id');
         $category=Category::find($id);
-        if($category->delete()){
-        return back()->with('sucess', 'sucessfully deleted');
-        }
-        return back()->with('could not be deleted');
+       if(count($category)>0){  
+       $products=Product::where('child_id',$id)->get();
+       foreach($products as $product){
+          $product->status='off';
+          $product->save();
+          echo 'save';
+       }
+       $category->status='off';
+      if($category->save()){
+          return back()->with('sucess', 'sucessfully Trashed');
+      }else{
+          return back()->with('sucess', 'could not be trashed');
       }
-      return redirect()->route('admin.login');
+    }else {
+        return back()->with('sucess', 'could not be trashed');
     }
+
+    }
+    public function recoverCategory(Request $request){
+        $id =$request->get('id');
+        $category=Category::find($id);
+        if(count($category)>0){
+        $products=Product::where('child_id',$id)->get();
+       foreach($products as $product){
+          $product->status='on';
+          $product->save();
+          echo 'save';
+       }
+       $category->status='on';
+      if($category->save()){
+          return back()->with('sucess', 'sucessfully Recovered');
+      }else{
+          return back()->with('sucess', 'could not be Recovered');
+      }
+    }else{
+        return back()->with('sucess', 'could not be Recovered');
+    }
+   }
 
 }

@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="{{URL::asset('images/icons/favicon.png')}}"/>
+	<link rel="icon" type="image/png" href="{{URL::asset('images/icons/linkaplus.png')}}"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->
@@ -81,8 +81,9 @@
 				<nav class="limiter-menu-desktop container">
 					
 					<!-- Logo desktop -->		
-					<a href="#" class="logo">
-						<img src="{{URL::asset('images/icons/logo-01.png')}}" alt="IMG-LOGO">
+					<a href="{{route('/')}}" class="logo">
+						<!-- <img src="{{URL::asset('images/icons/logo-01.png')}}" alt="IMG-LOGO"> -->
+						<img src="{{URL::asset('images/icons/aplus.png')}}" alt="IMG-LOGO">
 					</a>
 
 					<!-- Menu desktop -->
@@ -114,23 +115,23 @@
 							</li>
 
 							<li>
-								<a href="{{url('product')}}">Shop</a>
+								<a href="{{route('user.shoping')}}">Shop</a>
 							</li>
 
 							<li class="label1" data-label1="hot">
-								<a href="{{url('shooping')}}">Features</a>
+								<a href="{{route('user.feature')}}">Features</a>
 							</li>
 
 							<li>
-								<a href="{{url('blog')}}">Blog</a>
+								<a href="{{route('user.blog')}}">Blog</a>
 							</li>
 
 							<li>
-								<a href="{{url('about')}}">About</a>
+								<a href="{{route('user.about')}}">About</a>
 							</li>
 
 							<li>
-								<a href="{{	url('content')}}">Contact</a>
+								<a href="{{route('user.contact')}}">Contact</a>
 							</li>
 						</ul>
 					</div>	
@@ -329,25 +330,25 @@
 
 					<ul>
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+							<a href="{{route('viewInformation', 'Women')}}" class="stext-107 cl7 hov-cl1 trans-04">
 								Women
 							</a>
 						</li>
 
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+							<a  href="{{route('viewInformation', 'Men')}}" class="stext-107 cl7 hov-cl1 trans-04">
 								Men
 							</a>
 						</li>
 
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+							<a  href="{{route('viewInformation', 'Shoes')}}" class="stext-107 cl7 hov-cl1 trans-04">
 								Shoes
 							</a>
 						</li>
 
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+							<a  href="{{route('viewInformation', 'Watches')}}" class="stext-107 cl7 hov-cl1 trans-04">
 								Watches
 							</a>
 						</li>
@@ -412,9 +413,11 @@
 
 				<div class="col-sm-6 col-lg-3 p-b-50">
 					<h4 class="stext-301 cl0 p-b-30">
-						Newsletter
+						Contact Us
 					</h4>
-
+					<label>Contact: 981256454265</label>
+					<label>PH NO: 09156644477</label>
+                    <br><br>
 					<form>
 						<div class="wrap-input1 w-full p-b-4">
 							<input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com">
@@ -423,7 +426,7 @@
 
 						<div class="p-t-18">
 							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-								Subscribe
+								Send
 							</button>
 						</div>
 					</form>

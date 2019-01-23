@@ -60,19 +60,17 @@ class OrderController extends Controller
         ]);
 
         // for calculation
-        
-
-        // $calculations =Calculation::with('product')->where('order_id', $id)->get();
-        // $calculations =Product::with('calculation')->get();
-        // return $calculations;
-        // $calculations= DB::table('calculations')
-        // ->join('products', 'calculations.p_id', '=', 'products.id')
-        // ->select('calculations.qty', 'products.qty')->get();
-        // return $calculations;
-
+        $calculations =Calculation::with('product')->where('order_id', $id)->get();
        if($ord->status=='off'){
         $ord->status='on';
         if($ord->save() && $transaction->save()){
+            foreach($calculations as $calculation){
+                $products =Product::where('id',$calculation->p_id)->get();
+                foreach($products as $product){
+                    $product->available_qty= $product->available_qty-$calculation->qty;
+                    $product->save();
+                }
+            }
             return back()->with('sucess', 'Transaction Sucessfully');
         }else{
             return back()->with('sucess', 'Transaction Unsucessfull');
@@ -152,5 +150,8 @@ class OrderController extends Controller
    }else{
     return redirect()->route('admin.login');
  }
+}
+public function calculation($id){
+    
 }
 }

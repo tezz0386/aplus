@@ -25,7 +25,6 @@ class AdminLoginController extends Controller
                  'password'=>'required'
          ]);
          if(Auth::guard('admin')->attempt(['email'=>$request->get('email'), 'password'=>$request->get('password')])){
-            $request->session()->put('admin', $request->get('email'));
          	return view('admin.dashboard');
          }else{
          	return back()->withInput();
@@ -35,7 +34,6 @@ class AdminLoginController extends Controller
      public function getLogout(){
      	// return 'hello';
         if(Auth::guard('admin')->check()){
-            request()->session()->forget('admin');
             Auth::guard('admin')->logout();
         }
     	 return view('admin.login');

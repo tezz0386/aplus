@@ -65,7 +65,7 @@ Route::group(['prefix'=>'admin/dashboard/parent'], function(){
               'uses'=>'ParentCategoryController@create',
               'as'=>'addparent'
 	      	]);
-	      	  Route::post('/',[
+	      	Route::post('/',[
               'uses'=>'ParentCategoryController@store',
               'as'=>'storeparent'
 	      	]);
@@ -74,11 +74,14 @@ Route::group(['prefix'=>'admin/dashboard/parent'], function(){
               'as'=>'showparent'
 	      	  ]);
 	         
-	      	   Route::patch('/{parent?}',[
+	      	Route::patch('/{parent?}',[
               'uses'=>'ParentCategoryController@update',
               'as'=>'updateparent'
-	      	   ]);
-              
+	      	]);
+                Route::get('/view/{id?}',[
+                'uses'=>'ParentCategoryController@viewProduct',
+                'as'=>'admin.product.view'
+               ]);
 
                 // for delete but now i has could not deleted
 	      	   Route::delete('/{parent}/deleted',[
@@ -110,10 +113,14 @@ Route::group(['prefix'=>'admin/dashboard/child'], function(){
                      	]);
 
                       // fo delete but now could not working
-                      Route::delete('/category/deleted', [
-                            'uses'=>'CategoryController@destroy',
+                      Route::patch('/category/deleted', [
+                            'uses'=>'CategoryController@trashCategory',
                             'as'=>'deletechild'
-                      	]);
+                           ]);
+                     Route::patch('/category/recovered', [
+                              'uses'=>'CategoryController@recoverCategory',
+                              'as'=>'recoverChild'
+                             ]);
                            
 });
 Route::group(['prefix'=>'admin/dashboard/product'], function(){
@@ -121,7 +128,11 @@ Route::group(['prefix'=>'admin/dashboard/product'], function(){
                      'uses'=>'ProductController@index',
                      'as'=>'allproduct'
               ]);
-            Route::post('/',[
+              Route::get('',[
+               'uses'=>'ProductController@create',
+               'as'=>'createProduct'
+              ]);
+               Route::post('/',[
                'uses'=>'ProductController@store',
                'as'=>'storeproduct'
            	]);
@@ -129,10 +140,26 @@ Route::group(['prefix'=>'admin/dashboard/product'], function(){
                'uses'=>'ProductController@show',
                'as'=>'showproduct'
            	]);
-           	 Route::patch('/{product?}',[
+           	Route::patch('/{product?}',[
                'uses'=>'ProductController@update',
                'as'=>'updateproduct'
-           	]);
+                ]);
+                Route::patch('/trash/now/{id?}',[
+                    'uses'=>'ProductController@trashProduct',
+                    'as'=>'product.trash'
+                ]);
+                Route::patch('/recover/now/{id?}',[
+                    'uses'=>'ProductController@recoverProduct',
+                    'as'=>'product.recover'
+                ]);
+                Route::delete('/delete/now/{id?}',[
+                    'uses'=>'ProductController@deleteProduct',
+                    'as'=>'product.delete'
+                ]);
+                Route::get('/trash/list',[
+                    'uses'=>'ProductController@getTrash',
+                    'as'=>'product.get.trash'
+                ]);
             
            	 // for remove but now it is not working
            	
@@ -171,15 +198,51 @@ Route::group(['prefix'=>'/admin/dashboard/'], function(){
              Route::get('/transaction/details/{id?}', [
                   'uses'=>'TransactionController@viewDetails',
                   'as'=>'admin.transaction.view.details'
-        ]);
+             ]);
+             Route::get('/transaction/today', [
+                  'uses'=>'TransactionController@todayTrasaction',
+                  'as'=>'admin.transaction.today'
+             ]);
+             Route::get('/transaction/yesterday', [
+                  'uses'=>'TransactionController@yesterdayTrasaction',
+                  'as'=>'admin.transaction.yesterday'
+             ]);
+             Route::get('/transaction/week', [
+                  'uses'=>'TransactionController@weekTrasaction',
+                  'as'=>'admin.transaction.week'
+             ]);
 });
 
+Route::get('/about',[
+     'uses'=>'ViewController@viewAbout',
+     'as'=>'user.about'  
+]); 
+Route::get('/blog',[
+  'uses'=>'ViewController@viewBlog',
+  'as'=>'user.blog'  
+]); 
+Route::get('/contact',[
+     'uses'=>'ViewController@viewContact',
+     'as'=>'user.contact'  
+ ]);
+ Route::get('/shoping',[
+     'uses'=>'ViewController@viewShoping',
+     'as'=>'user.shoping'  
+ ]);
+ Route::get('/feature',[
+     'uses'=>'ViewController@viewFeature',
+     'as'=>'user.feature'  
+ ]);  
 
 Route::group(['prefix'=>'user'], function(){
       Route::get('/information/{name}/',[
                 'uses'=>'viewController@viewInformation',
                 'as'=>'viewInformation'
        ]);
+       Route::get('/information/shop/{name}/',[
+          'uses'=>'viewController@viewInformationPerticular',
+          'as'=>'viewInformationPerticular'
+        ]);
        Route::post('/cart',[
          'uses'=>'viewController@cart',
          'as'=>'addToCart'
@@ -208,6 +271,22 @@ Route::group(['prefix'=>'user'], function(){
           'uses'=>'UserController@getSignup',
           'as'=>'signup'
         ]);
+        Route::get('/password/recover',[
+          'uses'=>'UserController@getForget',
+          'as'=>'getForget'
+        ]);
+        Route::post('/password/recovered',[
+          'uses'=>'UserController@postForget',
+          'as'=>'postForget'
+        ]);
+        Route::get('/password/{verification?}',[
+          'uses'=>'UserController@getReset',
+          'as'=>'getReset',
+         ]);
+         Route::post('/password',[
+          'uses'=>'UserController@postReset',
+          'as'=>'postReset',
+         ]);
          Route::post('/signup',[
           'uses'=>'UserController@postSignup',
           'as'=>'signup'
@@ -220,10 +299,14 @@ Route::group(['prefix'=>'user'], function(){
               'uses'=>'UserController@postVerification',
               'as'=>'postVerification',
          ]);
-         Route::get('/shoping-cart/getcheckout',[
+         Route::post('/shoping-cart/getcheckout',[
             'uses'=>'ViewController@getCheckout',
             'as'=>'checkout'  
            ]);   
+          Route::get('/resend/verification',[
+               'uses'=>'UserController@resendAgainVerification',
+               'as'=>'user.resend',
+          ]);
          Route::get('/shoping-cart/checkout',[
                'uses'=>'CheckoutController@getCheckout',
                'as'=>'user.checkout'   

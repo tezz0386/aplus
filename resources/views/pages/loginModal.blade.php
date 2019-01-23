@@ -4,31 +4,28 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                <button class="how-pos3 hov3 trans-04 js-hide-modal1">
-                <img src="{{URL::asset('images/icons/icon-close.png')}}" alt="CLOSE">
-			        	</button>
+                <button type="button" class="js-hide-modal1" data-dismiss="modal">&times;</button>
               </div>
-              <div class="modal-body">
+                     <div class="modal-body">
                      <form action="{{route('user.login')}}" method="POST">
                                 @csrf
                                 @method('post')
                                 <div class="form-group">
                                     <label for="email" class="col-form-label">Email:</label>
-                                    <input name="email" type="email" class="form-control" id="email" required>
+                                    <input name="email" type="email" class="form-control" id="email" required="required" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-form-label">Password:</label>
-                                    <input name="password" type="password" class="form-control" id="password">
+                                    <input name="password" type="password" class="form-control" id="password" required="required" autocomplete="off">
                                 </div>
-            </div>
-            <div class="modal-footer">
-            <strong>Not have account..................................................?</strong>
-            <a href="#" class="btn btn-info">Signup</a>
-            <button type="submit" class="btn btn-primary">Login</button>
-           </div>
-                     </form>
-
+                       <div class="modal-footer">
+                       <strong>Not have account.........................................?</strong>
+                       <a href="{{route('signup')}}" class="btn btn-info">Signup</a>
+                       <button type="submit" class="btn btn-primary">Login</button>
+                       </div>
+                    </form>
               </div>
             </div>
           </div>
+      </div>
 </div>

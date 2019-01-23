@@ -1,40 +1,35 @@
 @extends('admin.dashboard')
 @section('content')
 
-                        <div class="card">
-                                    <h5 class="card-header">Item Add Form 
-                                             
-                                    </h5>
-                                    <div class="card-body">
-            <form method="post" action="{{route('storeproduct')}}" enctype="multipart/form-data">
+            
+<!-- for product add -->  
+        <form method="post" action="{{route('storeproduct')}}" enctype="multipart/form-data">
               @csrf
-              <div class="input-group mb-3">
-              <select class="form-control" name="child_name">
-                  @if(isset($category) && count($category))
-                  @foreach($category as $category)
-                  <option value="{{$category->child_name}}">{{$category->child_name}}</option>
-                   @endforeach
-                   @endif
-              </select>
-            </div>
+                   <div class="input-group mb-3">
+                            </div>
                                 <span><label>Status Activation:</label>
                                                   <div class="switch-button">
                                                         <input type="checkbox" checked="" name="switch14" id="switch14"><span>
                                                     <label for="switch14"></label></span>
                                                     </div>
                                              </span>
-
-                        
+                                            <div class="form-group">
+                                                  <select name="child_name" id="level" class="form-control">
+                                                          @foreach($categories as $category)
+                                                             <option value="{{$category->child_name}}">{{$category->child_name}}</option>
+                                                          @endforeach
+                                                  </select>
+                                            </div>
                                             <div class="form-group">
                                                 <label for="inputText3" class="col-form-label">Item Name:</label>
-                                                <input id="inputText3" type="text" class="form-control" name="name">
+                                                <input id="inputText3" type="text" class="form-control" name="p_name">
                                             </div>
                                             <div class="form-group">
                                                 <label for="description">Description</label>
                                                 <textarea class="form-control" id="description" rows="3" name="description"></textarea>
                                             </div>
-                                             <li class="list-group-item active"><h5>Feaured Image</h5></li>
                                              <li class="list-group-item">
+                                             <label>Image Feature</label>
 				                                     <div class="img-thumbnail  text-center">
 				                                     	<img src=" http://127.0.0.1/l5ecom/public/images/no-thumbnail.jpeg" id="imgthumbnail" class="img-fluid" alt="Image not found" height="300" width="200">
 				                                     </div>
@@ -51,7 +46,6 @@
 
                     <div class="row">
                              <div class="col-md-6">
-
                                             <div class="form-group">
                                             	<label for="price">Price:</label>
                                             <div class="input-group mb-3">
@@ -62,13 +56,6 @@
                                                 <div class="input-group-append"><span class="input-group-text">.00</span></div>
                                             </div>
                                             </div>
-
-
-
-
-
-
-
                                             <div class="form-group">
                                               <label for="discount">Discount:</label>
                                             <div class="input-group mb-3">
@@ -79,7 +66,6 @@
                                                 <div class="input-group-append"><span class="input-group-text">.00</span></div>
                                             </div>
                                             </div>
-
                         </div>
 
                                            <div class="form-group">
@@ -90,9 +76,6 @@
                                             </div>
                                             </div>
                     </div>
-
-                                        
-                                               <li class="list-group-item active"><h5>Other Feature</h5></li>
 				                                     	<div class="form-group">
 				                                     		<label for="color">Color:</label>
 				                                     		<input type="text" name="color" class="form-control" id="color">
@@ -102,15 +85,14 @@
 				                                     		<input type="text" name="size" class="form-control">
 				                                     	</div>
 
-                                            </div>
-                                            </div>
                                             <div class="form-group">
                                             	<button type="submit" class="btn btn-primary">Add</button>
                                             	<a href="#" class="btn btn-warning">Canel</a>
                                             </div>
+                                            </div>
+                                            </div>
                                         </form>
-                                    </div>
-                             </div>
+
 
 @endsection
 

@@ -10,7 +10,6 @@ class ParentCategory extends Model
     protected $fillable=[
 
              'parent_name',
-             'description'
     ];
     public function childs() {
     	return $this->hasMany('App\Category', 'cat_id');

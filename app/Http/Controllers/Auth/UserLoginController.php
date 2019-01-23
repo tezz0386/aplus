@@ -24,7 +24,6 @@ class UserLoginController extends Controller
                  'password'=>'required'
        ]);
        if(Auth::attempt(['email'=>$request->get('email'), 'password'=>$request->get('password')])){
-        $request->session()->put('auth', 'Authorized');
         return redirect()->route('/');
        }else{
           return back()->withInput()->with('error', 'password or user name not valied');
@@ -33,7 +32,6 @@ class UserLoginController extends Controller
     public function cartLogin(Request $request){
       if(!Session::has('auth')){
         if(Auth::attempt(['email'=>$request->get('email'), 'password'=>$request->get('password')])){
-          $request->session()->put('auth', 'Authorized');
              return back()->with('sucess', 'Authorizede');
          }else{
             return back()->withInput()->with('error', 'password or user name not valied');

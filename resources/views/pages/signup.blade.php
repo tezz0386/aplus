@@ -1,11 +1,19 @@
+
 @extends('main.navbar')
 @section('content')
-<br><br><br><br><br>
   <div class="container">
   	<div class="row">
   		<div class="col-md-3 col-lg-3 col-sm-0"></div>
   		<div class="col-md-6 col-lg-6 col-sm-12">
-  			<form role="form" action="{{route('signup')}}" method="post">
+		
+		<div class="p-t-60 p-b-20">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+              </div>
+              <div class="modal-body">
+			<form role="form" action="{{route('signup')}}" method="post">
 			  	@include('partial.errors')
           @method('post')
           @csrf
@@ -30,14 +38,16 @@
             <input type="password" name="password1" required="required" class="form-control" id="password1">
           </div>
   				<br>
-    				
-
          <div class="form-group">
   					<button type="submit" class="btn btn-primary">Signup</button>
-  					<a href="#" class="btn btn-warning">Cancell</a>
+  					<a href="{{route('/')}}" class="btn btn-warning">Cancell</a>
   				</div>
-  			</form>
+  		</form>
 
+              </div>
+            </div>
+          </div>
+        </div>
   		</div>
   		<div class="col-md-3 col-lg-3 col-sm-0"></div>
   	</div>

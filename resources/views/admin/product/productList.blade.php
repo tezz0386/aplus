@@ -5,6 +5,7 @@
                     <!-- basic table  -->
                     <!-- ============================================================== -->
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <a href="{{route('createProduct')}}" class="btn btn-primary btn-sm">Add Product</a>
                         <div class="card">
                         <input type="text" name="search" style="border-radius: 10px;" placeholder="Search here...............">
                             <h5 class="card-header">Product Table:</h5>
@@ -32,7 +33,13 @@
                                             <tr>
                                                 <td>{{$product->id}}</td>
                                                 <td>{{$product->p_name}}</td>
-                                                <td>{{$product->status}}</td>
+                                                <td>
+                                                  @if($product->status=='on')
+                                                  Active
+                                                  @else
+                                                  Deactive
+                                                  @endif
+                                                </td>
                                                 <td>{{$product->child_name}}</td>
                                                 <td>{{$product->price}}</td>
                                                 <td>{{$product->discount}}</td>
@@ -45,13 +52,15 @@
                                                 p_discount="{{$product->discount}}" p_qty="{{$product->qty}}" p_color="{{$product->color}}" p_size="{{$product->size}}"
                                                 p_available_qty="{{$product->available_qty}}" p_description="{{$product->description}}"  href="{{URL::asset('product/'.$product->path)}}"  
                                                 >Edit</button></td>
-                                                <td>
-                                                    <a href="#" onclick="trashProduct()">Trash</a>
-                                                   
+                                                <td> 
+                                                      @if($product->status=='on')
+                                                     <a href="#" id="trash{{$product->id}}" p_id="{{$product->id}}" data-toggle="modal" data-target="#trashProduct">Trash</a>  
+                                                      @else
+                                                      <a href="#" id="recover{{$product->id}}" p_id="{{$product->id}}" data-toggle="modal" data-target="#recoverProduct">Recover</a> 
+                                                      @endif
                                                 </td>
                                                 <td>
-                                                    <a href="#" onclick="deleteMethod()">Remove</a>
-                                                   
+                                                   <a href="#" id="delete{{$product->id}}" p_id="{{$product->id}}" data-toggle="modal" data-target="#deleteProduct">Remove</a>    
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -68,8 +77,82 @@
                     <!-- ============================================================== -->
                 </div>
 
+<!-- modal for trash -->
 
 
+<div id="trashProduct" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      <h4 class="modal-title">Trash Now</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+         <form action="{{route('product.trash')}}" method="post">
+            @method('patch')
+            @csrf
+            <input type="text" hidden="hidden" id="idForTrash" name="id">
+            <p> Are You Sure Trash This Item......?</p>
+            <button type="submit" class="btn btn-warning btn-sm">OK</button>
+         </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- modal for recover -->
+<div id="recoverProduct" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      <h4 class="modal-title">Recover Now</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+         <form action="{{route('product.recover')}}" method="post">
+            @method('patch')
+            @csrf
+            <input type="text" hidden="hidden" id="idForRecover" name="id">
+            <p> Are You Sure Trash This Item......?</p>
+            <button type="submit" class="btn btn-warning btn-sm">OK</button>
+         </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- modal for delete -->
+
+<div id="deleteProduct" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      <h4 class="modal-title">Delete Now</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+         <form action="{{route('product.delete')}}" method="post">
+            @method('delete')
+            @csrf
+            <input type="text" hidden="hidden" id="idForDelete" name="id">
+            <p> Are You Sure Delete This Item......?</p>
+            <button type="submit" class="btn btn-warning btn-sm">OK</button>
+         </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- for product edit modal -->
 <div class="modal fade" id="editProduct" role="dialog">
     <div class="modal-dialog">
     
@@ -96,7 +179,7 @@
                                             <input type="text" hidden="hidden" id="idForProduct" name="id">
                                             <div class="form-group">
                                                 <label for="nameProduct" class="col-form-label">Item Name:</label>
-                                                <input type="text" class="form-control" name="name" id="nameProduct">
+                                                <input type="text" class="form-control" name="p_name" id="nameProduct">
                                             </div>
                                             <div class="form-group">
                                                 <label for="description">Description</label>
@@ -156,7 +239,7 @@
                                            <div class="form-group">
                                                 <label for="qty">Qty:</label>
                                                 <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="qty" id="qty">
+                                                <input type="number" class="form-control" name="qty" id="qty">
                                                 <div class="input-group-append"><span class="input-group-text">.00</span></div>
                                             </div>
                                             </div>
@@ -175,7 +258,7 @@
                                              <div class="form-group">
                                                 <label for="available_qty">Available Qty:</label>
                                                 <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="available_qty" id="available_qty">
+                                                <input type="number" class="form-control" name="available_qty" id="available_qty">
                                                 <div class="input-group-append"><span class="input-group-text">.00</span></div>
                                             </div>
                                             </div>
@@ -190,7 +273,7 @@
       </div>
       
     </div>
-  </div>
+</div>
 @endsection
 @section('scripts')
 <script>
@@ -208,9 +291,18 @@
               $('#size').val($(this).attr('p_size'));
               $('#discount').val($(this).attr('p_discount'));
          });
+         $('#trash{{$product->id}}').click(function(){
+            $('#idForTrash').val($(this).attr('p_id'));
+         });
+         $('#delete{{$product->id}}').click(function(){
+            $('#idForDelete').val($(this).attr('p_id'));
+         });
+         $('#recover{{$product->id}}').click(function(){
+            $('#idForRecover').val($(this).attr('p_id'));
+         });
          @endforeach
      })
-     $('#thumbnail').on('change', function() {
+$('#thumbnail').on('change', function() {
 var file = $(this).get(0).files;
 var reader = new FileReader();
 reader.readAsDataURL(file[0]);

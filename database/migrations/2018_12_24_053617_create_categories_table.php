@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->integer('cat_id');
             $table->string('child_name')->unique();
             $table->longText('description')->nullable();
+            $table->string('status')->default('on');
             $table->timestamps();
         });
     }
